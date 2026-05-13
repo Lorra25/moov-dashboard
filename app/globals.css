@@ -126,12 +126,8 @@ main { max-width: 1100px; margin: 0 auto; padding: 36px 24px 60px; }
 }
 .card-value { font-size: 44px; font-weight: 800; letter-spacing: -2px; line-height: 1; }
 .card-value.orange { color: var(--brand); }
-.card-value.teal   { color: var(--brand); }
-.card-value.green  { color: #0f793e; }
-.card-bar { height: 3px; border-radius: 2px; margin-top: 18px; opacity: 0.5; }
-.card-bar.orange,
-.card-bar.teal   { background: linear-gradient(90deg, var(--brand), var(--brand2)); }
-.card-bar.green  { background: #0f793e; }
+.card-value.teal   { color: #ffffff; }
+.card-value.green  { color: #13c9c9; }
 
 /* ── Sections ── */
 .section { margin-bottom: 28px; }
@@ -295,13 +291,13 @@ tr:hover td { background: var(--surface2); }
 }
 .canal-btn:hover { background: var(--surface2); color: var(--text); border-color: var(--border2); }
 .canal-btn.active                       { background: rgba(19,202,205,0.12); color: var(--brand);  border-color: var(--brand); }
-.canal-btn.active.canal-btn-instagram   { background: rgba(180,68,173,0.12);  color: #b444ad; border-color: #b444ad; }
-.canal-btn.active.canal-btn-site        { background: rgba(103,189,191,0.12); color: #67bdbf; border-color: #67bdbf; }
+.canal-btn.active.canal-btn-instagram   { background: rgba(73,189,189,0.12);  color: #49bdbd; border-color: #49bdbd; }
+.canal-btn.active.canal-btn-site        { background: rgba(249,115,22,0.12);  color: #f97316; border-color: #f97316; }
 
 /* ── Canal badges ── */
 .badge-canal     { font-size: 11px; }
-.badge-instagram { background: rgba(180,68,173,0.12);  color: #b444ad; }
-.badge-site      { background: rgba(103,189,191,0.08); color: #67bdbf; }
+.badge-instagram { background: rgba(73,189,189,0.12);  color: #49bdbd; }
+.badge-site      { background: rgba(249,115,22,0.08);  color: #f97316; }
 
 /* ── Chart ── */
 .chart-card {
@@ -367,8 +363,6 @@ tr:hover td { background: var(--surface2); }
   .card-icon { width: 34px; height: 34px; font-size: 15px; margin-bottom: 10px; }
   .card-label { font-size: 10px; margin-bottom: 6px; }
   .card-value { font-size: 34px; letter-spacing: -1.5px; }
-  .card-bar   { margin-top: 12px; }
-
   .canal-filters { gap: 6px; margin-bottom: 14px; }
   .filter-label  { display: none; }
   .canal-btn     { padding: 4px 10px; font-size: 11px; }
@@ -383,6 +377,7 @@ tr:hover td { background: var(--surface2); }
   .stop-btn  { padding: 4px 10px; font-size: 11px; }
   .badge     { font-size: 11px; padding: 4px 10px; }
 
+  /* Oculta coluna Telefone */
   th:nth-child(2), td:nth-child(2) { display: none; }
 
   .chart-card  { padding: 16px 12px; }
@@ -391,13 +386,79 @@ tr:hover td { background: var(--surface2); }
 }
 
 /* ════════════════════════════════════════
-   RESPONSIVO — mobile pequeno  (≤ 400px)
+   RESPONSIVO — mobile pequeno  (≤ 480px)
+   Tabela vira layout de cartões
 ════════════════════════════════════════ */
-@media (max-width: 400px) {
-  th:nth-child(3), td:nth-child(3) { display: none; }
-
+@media (max-width: 480px) {
   .cards { grid-template-columns: 1fr 1fr; gap: 8px; }
   .card-value { font-size: 28px; }
 
-  table { min-width: 300px; }
+  /* Converte tabela em lista de cartões */
+  .table-wrap {
+    background: transparent;
+    border: none;
+    border-radius: 0;
+    overflow-x: visible;
+  }
+  table  { display: block; min-width: 0; width: 100%; }
+  thead  { display: none; }
+  tbody  { display: flex; flex-direction: column; gap: 8px; }
+
+  tbody tr {
+    display: block;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 4px 14px 10px;
+  }
+  tbody tr:hover td { background: transparent; }
+
+  td {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 10px;
+    padding: 7px 0;
+    border-top: 1px solid var(--border);
+    font-size: 13px;
+  }
+  /* Nome é o título do cartão */
+  td:nth-child(1) {
+    border-top: none;
+    font-size: 14px;
+    font-weight: 600;
+    padding: 10px 0 7px;
+    justify-content: flex-start;
+  }
+  td:nth-child(1)::before { display: none; }
+  td:nth-child(2) { display: none; } /* Telefone */
+
+  /* Labels à esquerda de cada linha */
+  td::before {
+    color: var(--muted);
+    font-size: 10px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    white-space: nowrap;
+    flex-shrink: 0;
+  }
+  td:nth-child(3)::before { content: "Data"; }
+  td:nth-child(4)::before { content: "Canal"; }
+  td:nth-child(5)::before { content: "Material"; }
+  td:nth-child(6)::before { content: "Ação"; }
+
+  /* Linha vazia */
+  .empty-row { display: block; text-align: center; border-top: none; padding: 20px 0; }
+
+  .chart-wrap { height: 180px; }
+}
+
+/* ════════════════════════════════════════
+   RESPONSIVO — telas muito pequenas (≤ 360px)
+════════════════════════════════════════ */
+@media (max-width: 360px) {
+  .nav-link { display: none; }
+  .card-value { font-size: 24px; }
+  .card-label { font-size: 9px; }
 }

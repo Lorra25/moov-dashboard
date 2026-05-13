@@ -171,19 +171,16 @@ export default function Dashboard() {
                 <div className="card-icon orange">&#128172;</div>
                 <div className="card-label">Contatos de Hoje</div>
                 <div className="card-value orange">{data.contacts_today}</div>
-                <div className="card-bar orange" />
               </div>
               <div className="card">
                 <div className="card-icon teal">&#128197;</div>
                 <div className="card-label">Contatos do Mês</div>
                 <div className="card-value teal">{data.contacts_month}</div>
-                <div className="card-bar teal" />
               </div>
               <div className="card">
                 <div className="card-icon green">&#128196;</div>
                 <div className="card-label">Materiais Enviados Hoje</div>
                 <div className="card-value green">{data.materials_today}</div>
-                <div className="card-bar green" />
               </div>
             </div>
 
