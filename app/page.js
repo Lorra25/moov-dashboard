@@ -4,6 +4,13 @@ import { useState, useEffect, useCallback } from 'react';
 
 const REFRESH_MS = 30_000;
 
+const CANAIS = [
+  { key: 'todos', label: 'Todos' },
+  { key: 'whatsapp', label: 'WhatsApp' },
+  { key: 'instagram', label: 'Instagram' },
+  { key: 'site', label: 'Site' },
+];
+
 function nowBrasilia() {
   return new Date(new Date().toLocaleString('en-US', { timeZone: 'America/Sao_Paulo' }));
 }
@@ -19,12 +26,14 @@ function monthStr() {
 }
 
 export default function Dashboard() {
-  const [data, setData] = useState({ contacts_today: 0, contacts_month: 0, materials_today: 0, recent: [] });
+  const [data, setData] = useState({ contacts_today: 0, contacts_month: 0, materials_today: 0, recent: [], leads_por_dia: [] });
   const [loading, setLoading] = useState(true);
   const [updatedAt, setUpdatedAt] = useState('');
   const [stoppedPhones, setStoppedPhones] = useState(new Set());
   const [stoppingPhones, setStoppingPhones] = useState(new Set());
+  const [errorPhones, setErrorPhones] = useState(new Set());
   const [monthVisible, setMonthVisible] = useState(false);
+  const [canalFilter, setCanalFilter] = useState('todos');
 
   const fetchData = useCallback(async () => {
     try {
@@ -50,15 +59,25 @@ export default function Dashboard() {
   }, [fetchData]);
 
   const handleStop = async (phone) => {
-    if (stoppedPhones.has(phone) || stoppingPhones.has(phone)) return;
+    if (!phone || stoppedPhones.has(phone) || stoppingPhones.has(phone)) return;
     setStoppingPhones(prev => new Set([...prev, phone]));
+    setErrorPhones(prev => { const s = new Set(prev); s.delete(phone); return s; });
     try {
-      const res = await fetch(`/api/stop/${phone}`);
+      const res = await fetch(`/api/stop/${encodeURIComponent(phone)}`);
       if (res.ok) {
         setStoppedPhones(prev => new Set([...prev, phone]));
+      } else {
+        setErrorPhones(prev => new Set([...prev, phone]));
+        setTimeout(() => {
+          setErrorPhones(prev => { const s = new Set(prev); s.delete(phone); return s; });
+        }, 3000);
       }
     } catch (err) {
       console.error(err);
+      setErrorPhones(prev => new Set([...prev, phone]));
+      setTimeout(() => {
+        setErrorPhones(prev => { const s = new Set(prev); s.delete(phone); return s; });
+      }, 3000);
     } finally {
       setStoppingPhones(prev => { const s = new Set(prev); s.delete(phone); return s; });
     }
@@ -67,26 +86,36 @@ export default function Dashboard() {
   const today = todayStr();
   const month = monthStr();
 
-  const todayRows = data.recent.filter(r => String(r.data).startsWith(today));
-  const monthRows = data.recent.filter(r => String(r.data).includes(month));
+  const applyFilter = (rows) =>
+    canalFilter === 'todos' ? rows : rows.filter(r => r.canal === canalFilter);
+
+  const todayRows = applyFilter(data.recent.filter(r => String(r.data).startsWith(today)));
+  const monthRows = applyFilter(data.recent.filter(r => String(r.data).includes(month)));
 
   function renderRows(rows) {
     if (rows.length === 0) {
       return (
         <tr>
-          <td colSpan={5} className="empty-row">Nenhum contato encontrado</td>
+          <td colSpan={6} className="empty-row">Nenhum contato encontrado</td>
         </tr>
       );
     }
     return rows.map((r, i) => {
       const isStopped = stoppedPhones.has(r.phone);
       const isStopping = stoppingPhones.has(r.phone);
+      const isError = errorPhones.has(r.phone);
       const hasMaterial = r.material === 'Enviado';
+      const canal = r.canal || 'whatsapp';
       return (
         <tr key={i}>
           <td>{r.nome || '—'}</td>
           <td>{r.phone}</td>
           <td>{r.data}</td>
+          <td>
+            <span className={`badge badge-canal badge-${canal}`}>
+              {canal.charAt(0).toUpperCase() + canal.slice(1)}
+            </span>
+          </td>
           <td>
             {hasMaterial
               ? <span className="badge badge-sent">&#10003; Enviado</span>
@@ -95,6 +124,8 @@ export default function Dashboard() {
           <td>
             {hasMaterial || isStopped ? (
               <button className="stop-btn stopped" disabled>&#10003; Parado</button>
+            ) : isError ? (
+              <button className="stop-btn error" disabled>&#9888; Erro</button>
             ) : (
               <button
                 className="stop-btn"
@@ -126,6 +157,7 @@ export default function Dashboard() {
         </a>
         <div className="header-meta">
           {updatedAt && <span className="header-updated">Atualizado em {updatedAt}</span>}
+          <a href="/metricas" className="nav-link">&#128202; Métricas</a>
           <button className="refresh-btn" onClick={fetchData}>&#8635; Atualizar</button>
         </div>
       </header>
@@ -161,6 +193,19 @@ export default function Dashboard() {
               </div>
             </div>
 
+            <div className="canal-filters">
+              <span className="filter-label">Canal:</span>
+              {CANAIS.map(c => (
+                <button
+                  key={c.key}
+                  className={`canal-btn canal-btn-${c.key}${canalFilter === c.key ? ' active' : ''}`}
+                  onClick={() => setCanalFilter(c.key)}
+                >
+                  {c.label}
+                </button>
+              ))}
+            </div>
+
             <div className="section">
               <div className="section-header">
                 <h2>
@@ -175,6 +220,7 @@ export default function Dashboard() {
                       <th>Nome</th>
                       <th>Telefone</th>
                       <th>Data e Hora</th>
+                      <th>Canal</th>
                       <th>Material</th>
                       <th>Ação</th>
                     </tr>
@@ -207,6 +253,7 @@ export default function Dashboard() {
                         <th>Nome</th>
                         <th>Telefone</th>
                         <th>Data e Hora</th>
+                        <th>Canal</th>
                         <th>Material</th>
                         <th>Ação</th>
                       </tr>

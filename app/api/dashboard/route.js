@@ -9,6 +9,13 @@ function normalizePhone(phone) {
   return p;
 }
 
+function normalizeCanal(val) {
+  const v = String(val).trim().toLowerCase();
+  if (v === 'instagram') return 'instagram';
+  if (v === 'site') return 'site';
+  return 'whatsapp';
+}
+
 function nowBrasilia() {
   return new Date(new Date().toLocaleString('en-US', { timeZone: 'America/Sao_Paulo' }));
 }
@@ -32,15 +39,15 @@ export async function GET() {
     const sheets = google.sheets({ version: 'v4', auth });
     const response = await sheets.spreadsheets.values.get({
       spreadsheetId,
-      range: 'Numero de Mensagens!A:F',
+      range: 'Numero de Mensagens!A:G',
     });
 
     const rows = response.data.values ?? [];
     if (rows.length < 2) {
-      return NextResponse.json({ contacts_today: 0, contacts_month: 0, materials_today: 0, recent: [] });
+      return NextResponse.json({ contacts_today: 0, contacts_month: 0, materials_today: 0, recent: [], leads_por_dia: [] });
     }
 
-    // Linha 0 = cabeçalho (ATLID, PHONE, NOME, THREAD ID, DATA E HORA, MATERIAL ENVIADO)
+    // Linha 0 = cabeçalho (ATLID, PHONE, NOME, THREAD ID, DATA E HORA, MATERIAL ENVIADO, CANAL)
     const dataRows = rows.slice(1);
 
     const now = nowBrasilia();
@@ -54,10 +61,12 @@ export async function GET() {
     let contacts_month = 0;
     let materials_today = 0;
     const recent = [];
+    const leadsMap = {};
 
     for (const row of dataRows) {
       const dateStr = row[4] ?? '';
       const material = String(row[5] ?? '').trim().toLowerCase() === 'enviado' ? 'Enviado' : '';
+      const canal = normalizeCanal(row[6] ?? '');
 
       if (dateStr.startsWith(todayStr)) {
         contacts_today++;
@@ -65,6 +74,12 @@ export async function GET() {
       }
       if (dateStr.includes(monthStr)) {
         contacts_month++;
+        const dateKey = dateStr.slice(0, 5);
+        if (!leadsMap[dateKey]) {
+          leadsMap[dateKey] = { date: dateKey, total: 0, instagram: 0, site: 0, whatsapp: 0 };
+        }
+        leadsMap[dateKey].total++;
+        leadsMap[dateKey][canal]++;
       }
 
       recent.push({
@@ -72,12 +87,19 @@ export async function GET() {
         phone: normalizePhone(row[1] ?? ''),
         data: dateStr,
         material,
+        canal,
       });
     }
 
     recent.reverse();
 
-    return NextResponse.json({ contacts_today, contacts_month, materials_today, recent });
+    const leads_por_dia = Object.values(leadsMap).sort((a, b) => {
+      const [da] = a.date.split('/').map(Number);
+      const [db] = b.date.split('/').map(Number);
+      return da - db;
+    });
+
+    return NextResponse.json({ contacts_today, contacts_month, materials_today, recent, leads_por_dia });
   } catch (err) {
     console.error('Dashboard API error:', err);
     return NextResponse.json({ error: err.message }, { status: 500 });

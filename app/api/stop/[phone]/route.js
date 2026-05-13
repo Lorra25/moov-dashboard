@@ -11,9 +11,15 @@ export async function GET(request, { params }) {
 
   try {
     const res = await fetch(`${flaskUrl}/admin/fechar/${phone}`, { cache: 'no-store' });
-    const data = await res.json();
+    if (!res.ok) {
+      const text = await res.text().catch(() => '');
+      console.error(`Flask stop failed [${res.status}]:`, text);
+      return NextResponse.json({ error: `Flask retornou ${res.status}` }, { status: 502 });
+    }
+    const data = await res.json().catch(() => ({ status: 'encerrado', phone }));
     return NextResponse.json(data);
   } catch (err) {
-    return NextResponse.json({ error: err.message }, { status: 500 });
+    console.error('Stop API error:', err.message);
+    return NextResponse.json({ error: err.message }, { status: 502 });
   }
 }

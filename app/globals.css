@@ -224,6 +224,12 @@ tr:hover td { background: var(--surface2); }
   cursor: default;
 }
 .stop-btn:disabled { opacity: 0.6; cursor: default; }
+.stop-btn.error {
+  background: rgba(255,200,0,0.1);
+  border-color: rgba(255,200,0,0.4);
+  color: #ffcc00;
+  cursor: default;
+}
 
 /* ── Divider ── */
 .divider { height: 1px; background: var(--border); margin: 32px 0; }
@@ -238,9 +244,86 @@ tr:hover td { background: var(--surface2); }
   font-size: 14px;
 }
 
+/* ── Nav link ── */
+.nav-link {
+  background: var(--surface2);
+  border: 1px solid var(--border2);
+  color: var(--muted);
+  font-size: 12px;
+  font-weight: 600;
+  padding: 7px 16px;
+  border-radius: 8px;
+  cursor: pointer;
+  text-decoration: none;
+  transition: background 0.15s, border-color 0.15s, color 0.15s;
+  font-family: inherit;
+  white-space: nowrap;
+}
+.nav-link:hover { background: #1a3550; border-color: var(--brand); color: var(--brand); }
+
+/* ── Canal filters ── */
+.canal-filters {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 20px;
+  flex-wrap: wrap;
+}
+.filter-label {
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--muted);
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  margin-right: 4px;
+}
+.canal-btn {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  color: var(--muted);
+  font-size: 12px;
+  font-weight: 600;
+  padding: 6px 16px;
+  border-radius: 20px;
+  cursor: pointer;
+  font-family: inherit;
+  transition: all 0.15s;
+}
+.canal-btn:hover { background: var(--surface2); color: var(--text); border-color: var(--border2); }
+.canal-btn.active.canal-btn-todos     { background: rgba(16,203,200,0.12); color: var(--brand); border-color: var(--brand); }
+.canal-btn.active.canal-btn-whatsapp  { background: rgba(37,211,102,0.12); color: #25d366; border-color: #25d366; }
+.canal-btn.active.canal-btn-instagram { background: rgba(225,48,108,0.12); color: #e1306c; border-color: #e1306c; }
+.canal-btn.active.canal-btn-site      { background: rgba(74,158,255,0.12); color: #4a9eff; border-color: #4a9eff; }
+
+/* ── Canal badges ── */
+.badge-canal { font-size: 11px; }
+.badge-whatsapp  { background: rgba(37,211,102,0.12); color: #25d366; }
+.badge-instagram { background: rgba(225,48,108,0.12); color: #e1306c; }
+.badge-site      { background: rgba(74,158,255,0.12); color: #4a9eff; }
+
+/* ── Chart ── */
+.chart-card {
+  background: var(--surface);
+  border-radius: 16px;
+  border: 1px solid var(--border);
+  padding: 24px;
+  margin-bottom: 28px;
+}
+.chart-title {
+  font-size: 15px;
+  font-weight: 600;
+  color: var(--text);
+  margin-bottom: 20px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.chart-wrap { width: 100%; height: 280px; }
+
 @media (max-width: 600px) {
   header { padding: 0 16px; }
   main { padding: 24px 16px 48px; }
   .card-value { font-size: 36px; }
+  .header-updated { display: none; }
   th:nth-child(2), td:nth-child(2) { display: none; }
 }
