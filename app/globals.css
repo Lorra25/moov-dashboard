@@ -198,8 +198,8 @@ tr:hover td { background: var(--surface2); }
   gap: 5px;
   font-size: 12px;
   font-weight: 600;
-  padding: 3px 10px;
-  border-radius: 20px;
+  padding: 5px 12px;
+  border-radius: 8px;
 }
 .badge-sent { background: rgba(15,121,62,0.15); color: #0f793e; }
 .badge-none { background: transparent; color: var(--muted2); }
@@ -216,6 +216,7 @@ tr:hover td { background: var(--surface2); }
   border-radius: 8px;
   cursor: pointer;
   font-family: inherit;
+  line-height: 1.4;
   transition: all 0.15s;
   white-space: nowrap;
 }
@@ -286,20 +287,21 @@ tr:hover td { background: var(--surface2); }
   color: var(--muted);
   font-size: 12px;
   font-weight: 600;
-  padding: 6px 16px;
-  border-radius: 20px;
+  padding: 5px 12px;
+  border-radius: 8px;
   cursor: pointer;
   font-family: inherit;
   transition: all 0.15s;
 }
 .canal-btn:hover { background: var(--surface2); color: var(--text); border-color: var(--border2); }
-.canal-btn.active                       { background: rgba(19,202,205,0.12); color: var(--brand); border-color: var(--brand); }
-.canal-btn.active.canal-btn-instagram   { background: rgba(17,197,97,0.12);  color: #48fffc;      border-color: #48fffc; }
+.canal-btn.active                       { background: rgba(19,202,205,0.12); color: var(--brand);  border-color: var(--brand); }
+.canal-btn.active.canal-btn-instagram   { background: rgba(190,53,169,0.12); color: #be35a9;      border-color: #be35a9; }
+.canal-btn.active.canal-btn-site        { background: rgba(190,193,199,0.12); color: #bec1c7;     border-color: #bec1c7; }
 
 /* ── Canal badges ── */
 .badge-canal     { font-size: 11px; }
-.badge-instagram { background: rgba(17,197,97,0.12); color: #48fffc; }
-.badge-site      { background: rgba(19,202,205,0.08); color: var(--brand2); }
+.badge-instagram { background: rgba(190,53,169,0.12);  color: #be35a9; }
+.badge-site      { background: rgba(190,193,199,0.08); color: #bec1c7; }
 
 /* ── Chart ── */
 .chart-card {
@@ -369,7 +371,7 @@ tr:hover td { background: var(--surface2); }
 
   .canal-filters { gap: 6px; margin-bottom: 14px; }
   .filter-label  { display: none; }
-  .canal-btn     { padding: 5px 12px; font-size: 11px; }
+  .canal-btn     { padding: 4px 10px; font-size: 11px; }
 
   .section-header h2 { font-size: 13px; }
   .toggle-btn { font-size: 11px; padding: 5px 10px; }
@@ -378,8 +380,8 @@ tr:hover td { background: var(--surface2); }
   table   { min-width: 420px; }
   th      { padding: 9px 10px; font-size: 10px; }
   td      { padding: 11px 10px; font-size: 12.5px; }
-  .stop-btn  { padding: 5px 9px; font-size: 11px; }
-  .badge     { font-size: 11px; padding: 2px 8px; }
+  .stop-btn  { padding: 4px 10px; font-size: 11px; }
+  .badge     { font-size: 11px; padding: 4px 10px; }
 
   th:nth-child(2), td:nth-child(2) { display: none; }
 
