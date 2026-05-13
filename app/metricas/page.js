@@ -15,11 +15,17 @@ import {
 const REFRESH_MS = 30_000;
 
 const CANAIS = [
-  { key: 'todos', label: 'Todos' },
-  { key: 'whatsapp', label: 'WhatsApp', color: '#25d366' },
-  { key: 'instagram', label: 'Instagram', color: '#e1306c' },
-  { key: 'site', label: 'Site', color: '#4a9eff' },
+  { key: 'todos',     label: 'Todos' },
+  { key: 'whatsapp',  label: 'WhatsApp' },
+  { key: 'instagram', label: 'Instagram' },
+  { key: 'site',      label: 'Site' },
 ];
+
+const CHART_COLORS = {
+  whatsapp:  '#13cacd',
+  site:      '#0faaa8',
+  instagram: '#7a9ab5',
+};
 
 function nowBrasilia() {
   return new Date(new Date().toLocaleString('en-US', { timeZone: 'America/Sao_Paulo' }));
@@ -79,10 +85,10 @@ export default function Metricas() {
 
   const leads = data.leads_por_dia ?? [];
 
-  const totalMes = leads.reduce((s, d) => s + d.total, 0);
-  const totalWhatsapp = leads.reduce((s, d) => s + d.whatsapp, 0);
+  const totalMes       = leads.reduce((s, d) => s + d.total,     0);
+  const totalWhatsapp  = leads.reduce((s, d) => s + d.whatsapp,  0);
   const totalInstagram = leads.reduce((s, d) => s + d.instagram, 0);
-  const totalSite = leads.reduce((s, d) => s + d.site, 0);
+  const totalSite      = leads.reduce((s, d) => s + d.site,      0);
 
   const chartData = canalFilter === 'todos'
     ? leads
@@ -127,22 +133,22 @@ export default function Metricas() {
                 <div className="card-bar teal" />
               </div>
               <div className="card">
-                <div className="card-icon" style={{ background: 'rgba(37,211,102,0.13)' }}>&#128241;</div>
+                <div className="card-icon teal">&#128241;</div>
                 <div className="card-label">WhatsApp</div>
-                <div className="card-value" style={{ color: '#25d366' }}>{totalWhatsapp}</div>
-                <div className="card-bar" style={{ background: '#25d366', opacity: 0.5 }} />
+                <div className="card-value teal">{totalWhatsapp}</div>
+                <div className="card-bar teal" />
               </div>
               <div className="card">
-                <div className="card-icon" style={{ background: 'rgba(225,48,108,0.13)' }}>&#128247;</div>
+                <div className="card-icon teal">&#128247;</div>
                 <div className="card-label">Instagram</div>
-                <div className="card-value" style={{ color: '#e1306c' }}>{totalInstagram}</div>
-                <div className="card-bar" style={{ background: '#e1306c', opacity: 0.5 }} />
+                <div className="card-value green">{totalInstagram}</div>
+                <div className="card-bar green" />
               </div>
               <div className="card">
-                <div className="card-icon" style={{ background: 'rgba(74,158,255,0.13)' }}>&#127760;</div>
+                <div className="card-icon teal">&#127760;</div>
                 <div className="card-label">Site</div>
-                <div className="card-value" style={{ color: '#4a9eff' }}>{totalSite}</div>
-                <div className="card-bar" style={{ background: '#4a9eff', opacity: 0.5 }} />
+                <div className="card-value teal">{totalSite}</div>
+                <div className="card-bar teal" />
               </div>
             </div>
 
@@ -191,13 +197,13 @@ export default function Metricas() {
                         formatter={(value) => value.charAt(0).toUpperCase() + value.slice(1)}
                       />
                       {(canalFilter === 'todos' || canalFilter === 'whatsapp') && (
-                        <Bar dataKey="whatsapp" name="whatsapp" stackId="a" fill="#25d366" radius={canalFilter !== 'todos' ? [4, 4, 0, 0] : [0, 0, 0, 0]} />
+                        <Bar dataKey="whatsapp" name="whatsapp" stackId="a" fill={CHART_COLORS.whatsapp} radius={canalFilter !== 'todos' ? [4, 4, 0, 0] : [0, 0, 0, 0]} />
                       )}
                       {(canalFilter === 'todos' || canalFilter === 'site') && (
-                        <Bar dataKey="site" name="site" stackId="a" fill="#4a9eff" radius={[0, 0, 0, 0]} />
+                        <Bar dataKey="site" name="site" stackId="a" fill={CHART_COLORS.site} radius={[0, 0, 0, 0]} />
                       )}
                       {(canalFilter === 'todos' || canalFilter === 'instagram') && (
-                        <Bar dataKey="instagram" name="instagram" stackId="a" fill="#e1306c" radius={[4, 4, 0, 0]} />
+                        <Bar dataKey="instagram" name="instagram" stackId="a" fill={CHART_COLORS.instagram} radius={[4, 4, 0, 0]} />
                       )}
                     </BarChart>
                   </ResponsiveContainer>
