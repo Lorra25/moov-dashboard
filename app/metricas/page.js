@@ -16,7 +16,6 @@ const REFRESH_MS = 30_000;
 
 const CANAIS = [
   { key: 'todos',     label: 'Todos' },
-  { key: 'whatsapp',  label: 'WhatsApp' },
   { key: 'instagram', label: 'Instagram' },
   { key: 'site',      label: 'Site' },
 ];
@@ -86,7 +85,6 @@ export default function Metricas() {
   const leads = data.leads_por_dia ?? [];
 
   const totalMes       = leads.reduce((s, d) => s + d.total,     0);
-  const totalWhatsapp  = leads.reduce((s, d) => s + d.whatsapp,  0);
   const totalInstagram = leads.reduce((s, d) => s + d.instagram, 0);
   const totalSite      = leads.reduce((s, d) => s + d.site,      0);
 
@@ -130,12 +128,6 @@ export default function Metricas() {
                 <div className="card-icon teal">&#128197;</div>
                 <div className="card-label">Total do Mês</div>
                 <div className="card-value teal">{totalMes}</div>
-                <div className="card-bar teal" />
-              </div>
-              <div className="card">
-                <div className="card-icon teal">&#128241;</div>
-                <div className="card-label">WhatsApp</div>
-                <div className="card-value teal">{totalWhatsapp}</div>
                 <div className="card-bar teal" />
               </div>
               <div className="card">
@@ -196,9 +188,6 @@ export default function Metricas() {
                         wrapperStyle={{ fontSize: 12, color: '#7a9ab5', paddingTop: 12 }}
                         formatter={(value) => value.charAt(0).toUpperCase() + value.slice(1)}
                       />
-                      {(canalFilter === 'todos' || canalFilter === 'whatsapp') && (
-                        <Bar dataKey="whatsapp" name="whatsapp" stackId="a" fill={CHART_COLORS.whatsapp} radius={canalFilter !== 'todos' ? [4, 4, 0, 0] : [0, 0, 0, 0]} />
-                      )}
                       {(canalFilter === 'todos' || canalFilter === 'site') && (
                         <Bar dataKey="site" name="site" stackId="a" fill={CHART_COLORS.site} radius={[0, 0, 0, 0]} />
                       )}

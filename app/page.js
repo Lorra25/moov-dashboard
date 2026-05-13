@@ -5,10 +5,9 @@ import { useState, useEffect, useCallback } from 'react';
 const REFRESH_MS = 30_000;
 
 const CANAIS = [
-  { key: 'todos', label: 'Todos' },
-  { key: 'whatsapp', label: 'WhatsApp' },
+  { key: 'todos',     label: 'Todos' },
   { key: 'instagram', label: 'Instagram' },
-  { key: 'site', label: 'Site' },
+  { key: 'site',      label: 'Site' },
 ];
 
 function nowBrasilia() {
