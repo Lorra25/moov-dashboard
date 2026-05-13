@@ -24,7 +24,7 @@ const CANAIS = [
 const CHART_COLORS = {
   whatsapp:  '#13cacd',
   site:      '#0faaa8',
-  instagram: '#7a9ab5',
+  instagram: '#11c561',
 };
 
 function nowBrasilia() {
@@ -141,8 +141,8 @@ export default function Metricas() {
               <div className="card">
                 <div className="card-icon teal">&#128247;</div>
                 <div className="card-label">Instagram</div>
-                <div className="card-value green">{totalInstagram}</div>
-                <div className="card-bar green" />
+                <div className="card-value" style={{ color: '#11c561' }}>{totalInstagram}</div>
+                <div className="card-bar" style={{ background: '#11c561', opacity: 0.5 }} />
               </div>
               <div className="card">
                 <div className="card-icon teal">&#127760;</div>
