@@ -320,10 +320,99 @@ tr:hover td { background: var(--surface2); }
 }
 .chart-wrap { width: 100%; height: 280px; }
 
-@media (max-width: 600px) {
-  header { padding: 0 16px; }
-  main { padding: 24px 16px 48px; }
-  .card-value { font-size: 36px; }
+/* ── Scroll horizontal nas tabelas ── */
+.table-wrap {
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+}
+table { min-width: 520px; }
+
+/* ════════════════════════════════════════
+   RESPONSIVO — tablet  (≤ 900px)
+════════════════════════════════════════ */
+@media (max-width: 900px) {
+  main { max-width: 100%; padding: 28px 20px 56px; }
+
+  .cards {
+    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+    gap: 12px;
+    margin-bottom: 32px;
+  }
+}
+
+/* ════════════════════════════════════════
+   RESPONSIVO — mobile  (≤ 640px)
+════════════════════════════════════════ */
+@media (max-width: 640px) {
+  /* Header */
+  header {
+    padding: 0 16px;
+    height: 56px;
+    gap: 8px;
+  }
   .header-updated { display: none; }
+  .logo-sub       { display: none; }
+  .header-meta    { gap: 8px; }
+  .nav-link, .refresh-btn {
+    padding: 6px 10px;
+    font-size: 11px;
+  }
+
+  /* Layout */
+  main { padding: 20px 14px 48px; }
+
+  /* Título */
+  .page-title { margin-bottom: 20px; }
+  .page-title h1 { font-size: 20px; }
+  .page-title p  { font-size: 12px; }
+
+  /* Cards — 2 colunas no mobile */
+  .cards {
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+    margin-bottom: 24px;
+  }
+  .card { padding: 16px 14px 14px; border-radius: 12px; }
+  .card-icon { width: 34px; height: 34px; font-size: 15px; margin-bottom: 10px; }
+  .card-label { font-size: 10px; margin-bottom: 6px; }
+  .card-value { font-size: 34px; letter-spacing: -1.5px; }
+  .card-bar   { margin-top: 12px; }
+
+  /* Filtros de canal */
+  .canal-filters { gap: 6px; margin-bottom: 14px; }
+  .filter-label  { display: none; }
+  .canal-btn     { padding: 5px 12px; font-size: 11px; }
+
+  /* Seções */
+  .section-header h2 { font-size: 13px; }
+  .toggle-btn { font-size: 11px; padding: 5px 10px; }
+  .divider { margin: 20px 0; }
+
+  /* Tabela */
+  table   { min-width: 420px; }
+  th      { padding: 9px 10px; font-size: 10px; }
+  td      { padding: 11px 10px; font-size: 12.5px; }
+  .stop-btn  { padding: 5px 9px; font-size: 11px; }
+  .badge     { font-size: 11px; padding: 2px 8px; }
+
+  /* Oculta coluna Telefone no mobile */
   th:nth-child(2), td:nth-child(2) { display: none; }
+
+  /* Gráfico */
+  .chart-card  { padding: 16px 12px; }
+  .chart-wrap  { height: 220px; }
+  .chart-title { font-size: 13px; margin-bottom: 14px; }
+}
+
+/* ════════════════════════════════════════
+   RESPONSIVO — mobile pequeno  (≤ 400px)
+════════════════════════════════════════ */
+@media (max-width: 400px) {
+  /* Oculta também Data e Hora */
+  th:nth-child(3), td:nth-child(3) { display: none; }
+
+  .cards { grid-template-columns: 1fr 1fr; gap: 8px; }
+  .card-value { font-size: 28px; }
+
+  table { min-width: 300px; }
 }
