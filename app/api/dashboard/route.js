@@ -47,7 +47,7 @@ export async function GET() {
       return NextResponse.json({ contacts_today: 0, contacts_month: 0, materials_today: 0, recent: [], leads_por_dia: [] });
     }
 
-    // Linha 0 = cabeçalho (ATLID, PHONE, NOME, THREAD ID, DATA E HORA, MATERIAL ENVIADO, CANAL)
+    // Linha 0 = cabeçalho (ATLID, PHONE, NOME, THREAD ID, DATA E HORA, CANAL, MATERIAL ENVIADO)
     const dataRows = rows.slice(1);
 
     const now = nowBrasilia();
@@ -65,8 +65,8 @@ export async function GET() {
 
     for (const row of dataRows) {
       const dateStr = row[4] ?? '';
-      const material = String(row[5] ?? '').trim().toLowerCase() === 'enviado' ? 'Enviado' : '';
-      const canal = normalizeCanal(row[6] ?? '');
+      const canal = normalizeCanal(row[5] ?? '');
+      const material = String(row[6] ?? '').trim().toLowerCase() === 'enviado' ? 'Enviado' : '';
 
       if (dateStr.startsWith(todayStr)) {
         contacts_today++;
