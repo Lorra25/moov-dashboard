@@ -201,8 +201,8 @@ tr:hover td { background: var(--surface2); }
   padding: 5px 12px;
   border-radius: 8px;
 }
-.badge-sent { background: rgba(15,121,62,0.15); color: #0f793e; }
-.badge-none { background: transparent; color: var(--muted2); }
+.badge-sent { background: rgba(15,121,62,0.12); border: 1px solid rgba(15,121,62,0.35); color: #0f793e; }
+.badge-none { background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.10); color: var(--muted2); }
 .empty-row  { color: var(--muted2); text-align: center; padding: 28px; font-size: 13px; }
 
 /* ── Stop button ── */
@@ -295,13 +295,13 @@ tr:hover td { background: var(--surface2); }
 }
 .canal-btn:hover { background: var(--surface2); color: var(--text); border-color: var(--border2); }
 .canal-btn.active                       { background: rgba(19,202,205,0.12); color: var(--brand);  border-color: var(--brand); }
-.canal-btn.active.canal-btn-instagram   { background: rgba(190,53,169,0.12); color: #be35a9;      border-color: #be35a9; }
-.canal-btn.active.canal-btn-site        { background: rgba(190,193,199,0.12); color: #bec1c7;     border-color: #bec1c7; }
+.canal-btn.active.canal-btn-instagram   { background: rgba(180,68,173,0.12);  color: #b444ad; border-color: #b444ad; }
+.canal-btn.active.canal-btn-site        { background: rgba(103,189,191,0.12); color: #67bdbf; border-color: #67bdbf; }
 
 /* ── Canal badges ── */
 .badge-canal     { font-size: 11px; }
-.badge-instagram { background: rgba(190,53,169,0.12);  color: #be35a9; }
-.badge-site      { background: rgba(190,193,199,0.08); color: #bec1c7; }
+.badge-instagram { background: rgba(180,68,173,0.12);  color: #b444ad; }
+.badge-site      { background: rgba(103,189,191,0.08); color: #67bdbf; }
 
 /* ── Chart ── */
 .chart-card {
