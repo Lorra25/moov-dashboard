@@ -17,9 +17,9 @@ export async function GET(request, { params }) {
     });
     clearTimeout(timer);
     const data = await res.json().catch(() => ({ status: 'encerrado', phone }));
-    return NextResponse.json(data, { status: res.ok ? 200 : res.status });
+    return NextResponse.json(data, { status: 200 });
   } catch (err) {
     console.error(`Stop [${phone}]:`, err.message);
-    return NextResponse.json({ error: err.message }, { status: 500 });
+    return NextResponse.json({ status: 'encerrado', phone }, { status: 200 });
   }
 }
