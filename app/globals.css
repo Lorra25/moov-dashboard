@@ -294,11 +294,11 @@ tr:hover td { background: var(--surface2); }
 }
 .canal-btn:hover { background: var(--surface2); color: var(--text); border-color: var(--border2); }
 .canal-btn.active                       { background: rgba(19,202,205,0.12); color: var(--brand); border-color: var(--brand); }
-.canal-btn.active.canal-btn-instagram   { background: rgba(17,197,97,0.12);  color: #11c561;      border-color: #11c561; }
+.canal-btn.active.canal-btn-instagram   { background: rgba(17,197,97,0.12);  color: #48fffc;      border-color: #48fffc; }
 
 /* ── Canal badges ── */
 .badge-canal     { font-size: 11px; }
-.badge-instagram { background: rgba(17,197,97,0.12); color: #11c561; }
+.badge-instagram { background: rgba(17,197,97,0.12); color: #48fffc; }
 .badge-site      { background: rgba(19,202,205,0.08); color: var(--brand2); }
 
 /* ── Chart ── */
