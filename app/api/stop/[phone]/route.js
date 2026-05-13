@@ -4,23 +4,22 @@ export async function GET(request, { params }) {
   const { phone } = await params;
   const flaskUrl = (process.env.FLASK_URL || '').replace(/\/+$/, '');
 
-  // Chama Flask em segundo plano — UI sempre retorna sucesso
-  if (flaskUrl) {
-    const controller = new AbortController();
-    const timer = setTimeout(() => controller.abort(), 6000);
-    fetch(`${flaskUrl}/admin/fechar/${phone}`, {
-      cache: 'no-store',
-      signal: controller.signal,
-    })
-      .then(res => {
-        clearTimeout(timer);
-        if (!res.ok) console.error(`Flask fechar [${res.status}] phone=${phone}`);
-      })
-      .catch(err => {
-        clearTimeout(timer);
-        console.error(`Flask fechar erro phone=${phone}:`, err.message);
-      });
+  if (!flaskUrl) {
+    return NextResponse.json({ status: 'encerrado', phone });
   }
 
-  return NextResponse.json({ status: 'encerrado', phone });
+  try {
+    const controller = new AbortController();
+    const timer = setTimeout(() => controller.abort(), 8000);
+    const res = await fetch(`${flaskUrl}/admin/fechar/${phone}`, {
+      cache: 'no-store',
+      signal: controller.signal,
+    });
+    clearTimeout(timer);
+    const data = await res.json().catch(() => ({ status: 'encerrado', phone }));
+    return NextResponse.json(data, { status: res.ok ? 200 : res.status });
+  } catch (err) {
+    console.error(`Stop [${phone}]:`, err.message);
+    return NextResponse.json({ error: err.message }, { status: 500 });
+  }
 }

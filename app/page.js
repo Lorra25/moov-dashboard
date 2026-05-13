@@ -31,7 +31,6 @@ export default function Dashboard() {
   const [updatedAt, setUpdatedAt] = useState('');
   const [stoppedPhones, setStoppedPhones] = useState(new Set());
   const [stoppingPhones, setStoppingPhones] = useState(new Set());
-  const [errorPhones, setErrorPhones] = useState(new Set());
   const [monthVisible, setMonthVisible] = useState(false);
   const [canalFilter, setCanalFilter] = useState('todos');
 
@@ -61,23 +60,13 @@ export default function Dashboard() {
   const handleStop = async (phone) => {
     if (!phone || stoppedPhones.has(phone) || stoppingPhones.has(phone)) return;
     setStoppingPhones(prev => new Set([...prev, phone]));
-    setErrorPhones(prev => { const s = new Set(prev); s.delete(phone); return s; });
     try {
-      const res = await fetch(`/api/stop/${encodeURIComponent(phone)}`);
+      const res = await fetch(`/api/stop/${phone}`);
       if (res.ok) {
         setStoppedPhones(prev => new Set([...prev, phone]));
-      } else {
-        setErrorPhones(prev => new Set([...prev, phone]));
-        setTimeout(() => {
-          setErrorPhones(prev => { const s = new Set(prev); s.delete(phone); return s; });
-        }, 3000);
       }
     } catch (err) {
       console.error(err);
-      setErrorPhones(prev => new Set([...prev, phone]));
-      setTimeout(() => {
-        setErrorPhones(prev => { const s = new Set(prev); s.delete(phone); return s; });
-      }, 3000);
     } finally {
       setStoppingPhones(prev => { const s = new Set(prev); s.delete(phone); return s; });
     }
@@ -103,7 +92,6 @@ export default function Dashboard() {
     return rows.map((r, i) => {
       const isStopped = stoppedPhones.has(r.phone);
       const isStopping = stoppingPhones.has(r.phone);
-      const isError = errorPhones.has(r.phone);
       const hasMaterial = r.material === 'Enviado';
       const canal = r.canal || 'whatsapp';
       return (
@@ -124,8 +112,6 @@ export default function Dashboard() {
           <td>
             {hasMaterial || isStopped ? (
               <button className="stop-btn stopped" disabled>&#10003; Parado</button>
-            ) : isError ? (
-              <button className="stop-btn error" disabled>&#9888; Erro</button>
             ) : (
               <button
                 className="stop-btn"
