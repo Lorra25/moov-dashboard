@@ -34,6 +34,13 @@ export default function Dashboard() {
   const [monthVisible, setMonthVisible] = useState(false);
   const [canalFilter, setCanalFilter] = useState('todos');
 
+  useEffect(() => {
+    try {
+      const saved = JSON.parse(localStorage.getItem('moov_stopped') || '[]');
+      if (saved.length) setStoppedPhones(new Set(saved));
+    } catch {}
+  }, []);
+
   const fetchData = useCallback(async () => {
     try {
       const res = await fetch('/api/dashboard', { cache: 'no-store' });
@@ -61,10 +68,12 @@ export default function Dashboard() {
     if (!phone || stoppedPhones.has(phone) || stoppingPhones.has(phone)) return;
     setStoppingPhones(prev => new Set([...prev, phone]));
     try {
-      const res = await fetch(`/api/stop/${phone}`);
-      if (res.ok) {
-        setStoppedPhones(prev => new Set([...prev, phone]));
-      }
+      await fetch(`/api/stop/${phone}`);
+      setStoppedPhones(prev => {
+        const next = new Set([...prev, phone]);
+        try { localStorage.setItem('moov_stopped', JSON.stringify([...next])); } catch {}
+        return next;
+      });
     } catch (err) {
       console.error(err);
     } finally {
